@@ -1,6 +1,7 @@
 const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
+const TerserPlugin = require('terser-webpack-plugin')
 
 const rootPath = process.cwd()
 const distPath = path.join(rootPath, 'dist')
@@ -105,6 +106,13 @@ const config = {
     }),
   ],
   resolve: {extensions: ['.ts', '.js']},
+  optimization: {
+    minimizer: [
+      // Don't re-minify the self-hosted 8th Wall engine files copied from
+      // external/ (they are already minified and very large)
+      new TerserPlugin({exclude: /external[\\/]/}),
+    ],
+  },
   module: {
     rules: [
       makeJsLoader(),
