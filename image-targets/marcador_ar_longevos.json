@@ -1,0 +1,23 @@
+{
+  "imagePath": "image-targets/marcador_ar_longevos_luminance.jpg",
+  "metadata": null,
+  "name": "marcador_ar_longevos",
+  "type": "PLANAR",
+  "properties": {
+    "left": 0,
+    "top": 196,
+    "width": 2288,
+    "height": 3051,
+    "isRotated": false,
+    "originalWidth": 2288,
+    "originalHeight": 3442
+  },
+  "resources": {
+    "originalImage": "marcador_ar_longevos_original.jpg",
+    "croppedImage": "marcador_ar_longevos_cropped.jpg",
+    "thumbnailImage": "marcador_ar_longevos_thumbnail.jpg",
+    "luminanceImage": "marcador_ar_longevos_luminance.jpg"
+  },
+  "created": 1781190296490,
+  "updated": 1781190296490
+}

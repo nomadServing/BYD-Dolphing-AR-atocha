@@ -1,0 +1,23 @@
+{
+  "imagePath": "image-targets/byd-dolphin_luminance.png",
+  "metadata": null,
+  "name": "byd-dolphin",
+  "type": "PLANAR",
+  "properties": {
+    "left": 87,
+    "top": 0,
+    "width": 524,
+    "height": 699,
+    "isRotated": true,
+    "originalWidth": 698,
+    "originalHeight": 699
+  },
+  "resources": {
+    "originalImage": "byd-dolphin_original.png",
+    "croppedImage": "byd-dolphin_cropped.png",
+    "thumbnailImage": "byd-dolphin_thumbnail.png",
+    "luminanceImage": "byd-dolphin_luminance.png"
+  },
+  "created": 1781261424965,
+  "updated": 1781261424965
+}

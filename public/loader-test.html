@@ -1,0 +1,87 @@
+<!doctype html>
+<!-- Test-only page: freezes the camera request so the custom loading screen stays visible. -->
+<html>
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Loader test</title>
+
+  <script>
+    // Keep getUserMedia pending forever so the xrextras loading screen never goes away
+    navigator.mediaDevices.getUserMedia = () => new Promise(() => {})
+  </script>
+
+  <script crossorigin="anonymous" src="/external/scripts/8frame-1.5.0.min.js"></script>
+  <script src="/external/xr/xr.js" async crossorigin="anonymous" data-preload-chunks="slam"></script>
+  <script src="/external/xrextras/xrextras.js" crossorigin="anonymous"></script>
+
+  <style>
+    .poweredby-img,
+    .poweredby-img-8w {
+      display: none !important;
+    }
+
+    #loadBackground {
+      background-color: #000000 !important;
+    }
+
+    #requestingCameraPermissions {
+      background-color: #000000 !important;
+    }
+
+    #loadImage[src*="load-grad"] {
+      opacity: 0 !important;
+    }
+
+    #loadImage {
+      width: 55vw !important;
+      max-width: 300px !important;
+      height: auto !important;
+      margin: 0 !important;
+      animation: none !important;
+    }
+
+    #loadBackground::after {
+      content: '';
+      position: absolute;
+      left: 50%;
+      top: 62%;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      transform: translateX(-50%);
+      background: #ffffff;
+      box-shadow: -24px 0 rgba(255, 255, 255, 0.25), 24px 0 rgba(255, 255, 255, 0.25);
+      animation: dot-flash 0.9s infinite linear alternate;
+    }
+
+    @keyframes dot-flash {
+      0% {
+        background: #ffffff;
+        box-shadow: -24px 0 rgba(255, 255, 255, 0.25), 24px 0 rgba(255, 255, 255, 0.25);
+      }
+
+      50% {
+        background: rgba(255, 255, 255, 0.25);
+        box-shadow: -24px 0 #ffffff, 24px 0 rgba(255, 255, 255, 0.25);
+      }
+
+      100% {
+        background: rgba(255, 255, 255, 0.25);
+        box-shadow: -24px 0 rgba(255, 255, 255, 0.25), 24px 0 #ffffff;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <img id="byd-logo" src="/assets/byd-logo.png" alt="BYD" style="display: none">
+
+  <a-scene
+    xrextras-loading="loadBackgroundColor: #000000; cameraBackgroundColor: #000000; loadImage: #byd-logo; loadAnimation: none"
+    xrweb="disableWorldTracking: true; allowedDevices: any">
+    <a-camera></a-camera>
+  </a-scene>
+</body>
+
+</html>
