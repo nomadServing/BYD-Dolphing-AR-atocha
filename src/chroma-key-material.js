@@ -18,12 +18,10 @@ class ChromaKeyMaterial extends THREE.ShaderMaterial {
     this.video = video
     this.texture = new THREE.VideoTexture(this.video)
 
-    // Keep video colors accurate when the renderer uses color management
-    if ('colorSpace' in this.texture && THREE.SRGBColorSpace) {
-      this.texture.colorSpace = THREE.SRGBColorSpace
-    } else if ('encoding' in this.texture && THREE.sRGBEncoding) {
-      this.texture.encoding = THREE.sRGBEncoding
-    }
+    // Do NOT assign sRGB colorSpace here: the chroma-key shader operates in
+    // raw sRGB values directly. Marking the texture as SRGBColorSpace would
+    // cause the GPU to linearize samples, creating a mismatch with keyColor.
+    this.texture.colorSpace = THREE.LinearSRGBColorSpace || ''
 
     const chromaKeyColor = new THREE.Color(keyColor)
 
