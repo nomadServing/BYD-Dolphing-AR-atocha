@@ -1,150 +1,206 @@
 <!doctype html>
 <html>
+  <head>
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=no"
+    />
+    <meta
+      name="apple-mobile-web-app-capable"
+      content="yes"
+    />
 
-<head>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-  <meta name="apple-mobile-web-app-capable" content="yes">
+    <title>BYD Atocha AR - Image Target + Chromakey</title>
 
-  <title>BYD Atocha AR - Image Target + Chromakey</title>
+    <!-- A-Frame (8th Wall's 8frame build, self-hosted) -->
+    <script
+      crossorigin="anonymous"
+      src="./external/scripts/8frame-1.5.0.min.js"
+    ></script>
 
-  <!-- A-Frame (8th Wall's 8frame build, self-hosted) -->
-  <script crossorigin="anonymous" src="./external/scripts/8frame-1.5.0.min.js"></script>
+    <!-- 8th Wall engine binary (self-hosted, SLAM chunk preloaded for image targets) -->
+    <script
+      src="./external/xr/xr.js"
+      async
+      crossorigin="anonymous"
+      data-preload-chunks="slam"
+    ></script>
+    <script
+      src="./external/landing-page/landing-page.js"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="./external/xrextras/xrextras.js"
+      crossorigin="anonymous"
+    ></script>
 
-  <!-- 8th Wall engine binary (self-hosted, SLAM chunk preloaded for image targets) -->
-  <script src="./external/xr/xr.js" async crossorigin="anonymous" data-preload-chunks="slam"></script>
-  <script src="./external/landing-page/landing-page.js" crossorigin="anonymous"></script>
-  <script src="./external/xrextras/xrextras.js" crossorigin="anonymous"></script>
+    <style>
+      .message {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 10000;
+        max-width: 80vw;
+        font-family: sans-serif;
+        font-weight: 400;
+        font-size: 5vmin;
+        color: white;
+        text-align: center;
+        background-color: rgba(87, 87, 87, 0.55);
+        padding: 2vmin;
+        border-radius: 10px;
+        border: none;
+        opacity: 0;
+        transition: opacity 0.4s;
+        pointer-events: none;
+      }
 
-  <style>
-    .message {
-      position: absolute;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 10000;
-      max-width: 80vw;
-      font-family: sans-serif;
-      font-weight: 400;
-      font-size: 5vmin;
-      color: white;
-      text-align: center;
-      background-color: rgba(87, 87, 87, 0.55);
-      padding: 2vmin;
-      border-radius: 10px;
-      border: none;
-      opacity: 0;
-      transition: opacity 0.4s;
-      pointer-events: none;
-    }
+      .message--show {
+        opacity: 1;
+      }
 
-    .message--show {
-      opacity: 1;
-    }
+      #marker-hint {
+        top: 6vh;
+      }
 
-    #marker-hint {
-      top: 6vh;
-    }
+      /* Hide the "powered by 8thWall" badge on loading/error/landing screens */
+      .poweredby-img,
+      .poweredby-img-8w {
+        display: none !important;
+      }
 
-    /* Hide the "powered by 8thWall" badge on loading/error/landing screens */
-    .poweredby-img,
-    .poweredby-img-8w {
-      display: none !important;
-    }
-
-    /* --- Custom loading screen (black + BYD logo + dots loader) --- */
-    /* Force our design from the very first paint, before the JS customization
+      /* --- Custom loading screen (black + BYD logo + dots loader) --- */
+      /* Force our design from the very first paint, before the JS customization
        of xrextras-loading kicks in (avoids the default blue/spinner flash) */
-    #loadBackground {
-      background-color: #000000 !important;
-    }
+      #loadBackground {
+        background-color: #000000 !important;
+      }
 
-    #requestingCameraPermissions {
-      background-color: #000000 !important;
-    }
+      #requestingCameraPermissions {
+        background-color: #000000 !important;
+      }
 
-    /* Hide the default gradient spinner until its src is swapped to our logo */
-    #loadImage[src*="load-grad"] {
-      opacity: 0 !important;
-    }
+      /* Hide the default gradient spinner until its src is swapped to our logo */
+      #loadImage[src*='load-grad'] {
+        opacity: 0 !important;
+      }
 
-    /* Overrides the default 5em square image of the xrextras loading screen */
-    #loadImage {
-      width: 55vw !important;
-      max-width: 300px !important;
-      height: auto !important;
-      margin: 0 !important;
-      animation: none !important;
-    }
+      /* Overrides the default 5em square image of the xrextras loading screen */
+      #loadImage {
+        width: 55vw !important;
+        max-width: 300px !important;
+        height: auto !important;
+        margin: 0 !important;
+        animation: none !important;
+      }
 
-    /* Three-dot loader rendered below the logo inside the loading screen */
-    #loadBackground::after {
-      content: '';
-      position: absolute;
-      left: 50%;
-      top: 62%;
-      width: 12px;
-      height: 12px;
-      border-radius: 50%;
-      transform: translateX(-50%);
-      background: #ffffff;
-      box-shadow: -24px 0 rgba(255, 255, 255, 0.25), 24px 0 rgba(255, 255, 255, 0.25);
-      animation: dot-flash 0.9s infinite linear alternate;
-    }
-
-    @keyframes dot-flash {
-      0% {
+      /* Three-dot loader rendered below the logo inside the loading screen */
+      #loadBackground::after {
+        content: '';
+        position: absolute;
+        left: 50%;
+        top: 62%;
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        transform: translateX(-50%);
         background: #ffffff;
-        box-shadow: -24px 0 rgba(255, 255, 255, 0.25), 24px 0 rgba(255, 255, 255, 0.25);
+        box-shadow:
+          -24px 0 rgba(255, 255, 255, 0.25),
+          24px 0 rgba(255, 255, 255, 0.25);
+        animation: dot-flash 0.9s infinite linear alternate;
       }
 
-      50% {
-        background: rgba(255, 255, 255, 0.25);
-        box-shadow: -24px 0 #ffffff, 24px 0 rgba(255, 255, 255, 0.25);
+      @keyframes dot-flash {
+        0% {
+          background: #ffffff;
+          box-shadow:
+            -24px 0 rgba(255, 255, 255, 0.25),
+            24px 0 rgba(255, 255, 255, 0.25);
+        }
+
+        50% {
+          background: rgba(255, 255, 255, 0.25);
+          box-shadow:
+            -24px 0 #ffffff,
+            24px 0 rgba(255, 255, 255, 0.25);
+        }
+
+        100% {
+          background: rgba(255, 255, 255, 0.25);
+          box-shadow:
+            -24px 0 rgba(255, 255, 255, 0.25),
+            24px 0 #ffffff;
+        }
       }
+    </style>
+  </head>
 
-      100% {
-        background: rgba(255, 255, 255, 0.25);
-        box-shadow: -24px 0 rgba(255, 255, 255, 0.25), 24px 0 #ffffff;
-      }
-    }
-  </style>
-</head>
+  <body>
+    <div
+      id="marker-hint"
+      class="message"
+    >
+      Apunta al marcador y descubre
+    </div>
 
-<body>
-  <div id="marker-hint" class="message">Apunta al marcador y descubre</div>
+    <!-- Source image for the customized xrextras loading screen -->
+    <img
+      id="byd-logo"
+      src="assets/byd-logo.png"
+      alt="BYD"
+      style="display: none"
+    />
 
-  <!-- Source image for the customized xrextras loading screen -->
-  <img id="byd-logo" src="assets/byd-logo.png" alt="BYD" style="display: none">
+    <script src="bundle.js"></script>
 
+    <a-scene
+      xrextras-gesture-detector
+      landing-page
+      xrextras-loading="loadBackgroundColor: #000000; cameraBackgroundColor: #000000; loadImage: #byd-logo; loadAnimation: none"
+      xrextras-runtime-error
+      renderer="colorManagement: true"
+      xrweb="disableWorldTracking: true; allowedDevices: any"
+    >
+      <a-assets>
+        <video
+          id="chroma-video"
+          muted
+          playsinline
+          crossorigin="anonymous"
+          loop="true"
+          src="assets/chroma-video.mp4"
+        ></video>
+      </a-assets>
 
-  <script src="bundle.js"></script>
+      <a-camera
+        position="0 4 10"
+        raycaster="objects: .cantap"
+        cursor="fuse: false; rayOrigin: mouse;"
+      >
+      </a-camera>
 
-  <a-scene xrextras-gesture-detector landing-page
-    xrextras-loading="loadBackgroundColor: #000000; cameraBackgroundColor: #000000; loadImage: #byd-logo; loadAnimation: none"
-    xrextras-runtime-error
-    renderer="colorManagement: true" xrweb="disableWorldTracking: true; allowedDevices: any">
+      <a-light
+        type="directional"
+        intensity="0.5"
+        position="1 1 1"
+      ></a-light>
+      <a-light
+        type="ambient"
+        intensity="1"
+      ></a-light>
 
-    <a-assets>
-      <video id="chroma-video" muted playsinline crossorigin="anonymous" loop="true"
-        src="assets/chroma-video.mp4"></video>
-    </a-assets>
-
-    <a-camera position="0 4 10" raycaster="objects: .cantap" cursor="fuse: false; rayOrigin: mouse;">
-    </a-camera>
-
-    <a-light type="directional" intensity="0.5" position="1 1 1"></a-light>
-    <a-light type="ambient" intensity="1"></a-light>
-
-    <!-- "name:" must match the "name" field of the compiled image target JSON -->
-    <xrextras-named-image-target name="byd-dolphin">
-      <!-- Child entity allows offsetting the video relative to the marker -->
-      <a-entity position="0 0 0"
-        geometry="primitive: plane; height: 1.6; width: 1.6"
-        chromakey-video="src: #chroma-video; color: #48ff00; similarity: 0.16; smoothness: 0.08; spill: 0.21"
-        target-video-control="name: byd-dolphin; video: #chroma-video">
-      </a-entity>
-    </xrextras-named-image-target>
-
-  </a-scene>
-</body>
-
+      <!-- "name:" must match the "name" field of the compiled image target JSON -->
+      <xrextras-named-image-target name="byd-dolphin">
+        <!-- Child entity allows offsetting the video relative to the marker -->
+        <a-entity
+          position="0 0 0"
+          geometry="primitive: plane; height: 1.6; width: 1.6"
+          chromakey-video="src: #chroma-video; color: #48ff00; similarity: 0.16; smoothness: 0.08; spill: 0.21"
+          target-video-control="name: byd-dolphin; video: #chroma-video"
+        >
+        </a-entity>
+      </xrextras-named-image-target>
+    </a-scene>
+  </body>
 </html>
