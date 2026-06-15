@@ -9,7 +9,7 @@ void main() {
   vUv = uv;
   gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
 }
-`
+`;
 
 const FRAGMENT_SHADER = `
 uniform sampler2D tex;
@@ -38,7 +38,7 @@ vec4 ProcessChromaKey(vec2 texCoord) {
 
   // Protect dark pixels: below this luminance threshold the chroma signal
   // is unreliable (compression noise / chroma bleed), so we fade the key out.
-  float lumaProtect = smoothstep(0.06, 0.18, luma);
+  float lumaProtect = smoothstep(0.06, 0.25, luma);
 
   float baseMask = chromaDist - similarity;
   float fullMask = pow(clamp(baseMask / smoothness, 0., 1.), 1.5);
@@ -57,6 +57,6 @@ void main(void) {
   vec2 texCoord = vUv;
   gl_FragColor = ProcessChromaKey(texCoord);
 }
-`
+`;
 
-export {VERTEX_SHADER, FRAGMENT_SHADER}
+export { VERTEX_SHADER, FRAGMENT_SHADER };
