@@ -23,12 +23,21 @@ class ChromaKeyMaterial extends THREE.ShaderMaterial {
     // cause the GPU to linearize samples, creating a mismatch with keyColor.
     this.texture.colorSpace = THREE.LinearSRGBColorSpace || ''
 
-    const chromaKeyColor = new THREE.Color(keyColor)
+    // Pass sRGB values directly as a Vector3 so THREE.ColorManagement cannot
+    // linearize them. The shader compares raw sRGB texture samples against this.
+    const chromaKeyVec = (() => {
+      const hex = keyColor.replace('#', '')
+      return new THREE.Vector3(
+        parseInt(hex.substring(0, 2), 16) / 255,
+        parseInt(hex.substring(2, 4), 16) / 255,
+        parseInt(hex.substring(4, 6), 16) / 255
+      )
+    })()
 
     this.setValues({
       uniforms: {
         tex: {value: this.texture},
-        keyColor: {value: chromaKeyColor},
+        keyColor: {value: chromaKeyVec},
         similarity: {value: similarity},
         smoothness: {value: smoothness},
         spill: {value: spill},

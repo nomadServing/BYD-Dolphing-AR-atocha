@@ -46,7 +46,12 @@ const chromaKeyComponent = {
       return
     }
     const {uniforms} = this.material
-    uniforms.keyColor.value.set(this.data.color)
+    const hex = this.data.color.replace('#', '')
+    uniforms.keyColor.value.set(
+      parseInt(hex.substring(0, 2), 16) / 255,
+      parseInt(hex.substring(2, 4), 16) / 255,
+      parseInt(hex.substring(4, 6), 16) / 255
+    )
     uniforms.similarity.value = this.data.similarity
     uniforms.smoothness.value = this.data.smoothness
     uniforms.spill.value = this.data.spill
