@@ -31,14 +31,23 @@ vec2 RGBtoUV(vec3 rgb) {
 
 vec4 ProcessChromaKey(vec2 texCoord) {
   vec4 rgba = texture2D(tex, texCoord);
-  float chromaDist = distance(RGBtoUV(texture2D(tex, texCoord).rgb), RGBtoUV(keyColor));
+  float chromaDist = distance(RGBtoUV(rgba.rgb), RGBtoUV(keyColor));
+
+  // Luminance of the pixel (Rec.709)
+  float luma = dot(rgba.rgb, vec3(0.2126, 0.7152, 0.0722));
+
+  // Protect dark pixels: below this luminance threshold the chroma signal
+  // is unreliable (compression noise / chroma bleed), so we fade the key out.
+  float lumaProtect = smoothstep(0.06, 0.18, luma);
 
   float baseMask = chromaDist - similarity;
   float fullMask = pow(clamp(baseMask / smoothness, 0., 1.), 1.5);
-  rgba.a = fullMask;
+
+  // Blend: dark pixels always stay opaque (lumaProtect → 0 means keep alpha = 1)
+  rgba.a = mix(1.0, fullMask, lumaProtect);
 
   float spillVal = pow(clamp(baseMask / spill, 0., 1.), 1.5);
-  float desat = clamp(rgba.r * 0.2126 + rgba.g * 0.7152 + rgba.b * 0.0722, 0., 1.);
+  float desat = clamp(luma, 0., 1.);
   rgba.rgb = mix(vec3(desat, desat, desat), rgba.rgb, spillVal);
 
   return rgba;
