@@ -44,5 +44,3 @@ Sustituye `src/assets/chroma-video.mp4`. Ajusta en `src/index.html`:
 
 - El binario del engine (`external/xr/`) es gratuito (también para uso comercial) bajo la [XR Engine License](https://github.com/8thwall/engine/blob/main/LICENSE). Debe incluirse sin modificar, con su copyright visible.
 - El resto (xrextras, shader chromakey, CLI) es MIT.
-
-alex
