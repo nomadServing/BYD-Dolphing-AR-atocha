@@ -1,3 +1,4 @@
+const fs = require('fs')
 const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
@@ -126,6 +127,14 @@ const config = {
   mode: 'production',
   context: srcPath,
   devServer: {
+    host: '0.0.0.0',
+    server: {
+      type: 'https',
+      options: {
+        key: fs.readFileSync(path.join(rootPath, 'key.pem')),
+        cert: fs.readFileSync(path.join(rootPath, 'cert.pem')),
+      },
+    },
     open: false,
     compress: true,
     hot: true,
