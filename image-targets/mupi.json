@@ -5,12 +5,12 @@
   "type": "PLANAR",
   "properties": {
     "left": 0,
-    "top": 128,
-    "width": 576,
-    "height": 768,
+    "top": 240,
+    "width": 1080,
+    "height": 1440,
     "isRotated": false,
-    "originalWidth": 576,
-    "originalHeight": 1024
+    "originalWidth": 1080,
+    "originalHeight": 1920
   },
   "resources": {
     "originalImage": "mupi_original.jpg",
@@ -18,6 +18,6 @@
     "thumbnailImage": "mupi_thumbnail.jpg",
     "luminanceImage": "mupi_luminance.jpg"
   },
-  "created": 1782134016422,
-  "updated": 1782134016422
+  "created": 1782134500358,
+  "updated": 1782134500358
 }
