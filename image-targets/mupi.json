@@ -1,23 +1,23 @@
 {
-  "imagePath": "image-targets/mupi_luminance.png",
+  "imagePath": "image-targets/mupi_luminance.jpg",
   "metadata": null,
   "name": "mupi",
   "type": "PLANAR",
   "properties": {
     "left": 0,
-    "top": 43,
-    "width": 596,
-    "height": 795,
+    "top": 128,
+    "width": 576,
+    "height": 768,
     "isRotated": false,
-    "originalWidth": 596,
-    "originalHeight": 881
+    "originalWidth": 576,
+    "originalHeight": 1024
   },
   "resources": {
-    "originalImage": "mupi_original.png",
-    "croppedImage": "mupi_cropped.png",
-    "thumbnailImage": "mupi_thumbnail.png",
-    "luminanceImage": "mupi_luminance.png"
+    "originalImage": "mupi_original.jpg",
+    "croppedImage": "mupi_cropped.jpg",
+    "thumbnailImage": "mupi_thumbnail.jpg",
+    "luminanceImage": "mupi_luminance.jpg"
   },
-  "created": 1782106676406,
-  "updated": 1782106676406
+  "created": 1782134016422,
+  "updated": 1782134016422
 }
