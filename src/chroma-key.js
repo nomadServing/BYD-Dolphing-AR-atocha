@@ -40,6 +40,12 @@ const chromaKeyComponent = {
         applyMaterial()
       }
     })
+
+    this.tick = () => {
+      if (this.material?.texture && video.readyState >= 2) {
+        this.material.texture.needsUpdate = true
+      }
+    }
   },
   update() {
     if (!this.material) {
