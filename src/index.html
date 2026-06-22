@@ -169,7 +169,7 @@
           playsinline
           crossorigin="anonymous"
           loop="true"
-          src="./assets/chroma-video.mp4"
+          src="./assets/mupi-video.mp4"
         ></video>
       </a-assets>
 
@@ -191,13 +191,13 @@
       ></a-light>
 
       <!-- "name:" must match the "name" field of the compiled image target JSON -->
-      <xrextras-named-image-target name="byd-dolphin">
+      <xrextras-named-image-target name="mupi">
         <!-- Child entity allows offsetting the video relative to the marker -->
         <a-entity
-          position="0 -0.30 0"
+          position="0 0 0"
           geometry="primitive: plane; height: 4; width: 2.1; "
           chromakey-video="src: #chroma-video; color: #008E00; similarity: 0.16; smoothness: 0.08; spill: 0.21"
-          target-video-control="name: byd-dolphin; video: #chroma-video"
+          target-video-control="name: mupi; video: #chroma-video"
           look-at="[camera]"
         >
         </a-entity>
