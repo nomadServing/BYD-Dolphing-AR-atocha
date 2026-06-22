@@ -6,7 +6,6 @@
   },
   "scripts": {
     "build": "webpack --config config/webpack.config.js",
-    "start": "serve dist -l $PORT",
     "serve": "webpack-dev-server --mode=development --config config/webpack.config.js"
   },
   "devDependencies": {
@@ -37,8 +36,5 @@
   "main": "index.js",
   "keywords": [],
   "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "serve": "^14.2.6"
-  }
+  "license": "ISC"
 }
