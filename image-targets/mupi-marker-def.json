@@ -1,0 +1,23 @@
+{
+  "imagePath": "image-targets/mupi-marker-def_luminance.png",
+  "metadata": null,
+  "name": "mupi-marker-def",
+  "type": "PLANAR",
+  "properties": {
+    "left": 0,
+    "top": 43,
+    "width": 596,
+    "height": 795,
+    "isRotated": false,
+    "originalWidth": 596,
+    "originalHeight": 881
+  },
+  "resources": {
+    "originalImage": "mupi-marker-def_original.png",
+    "croppedImage": "mupi-marker-def_cropped.png",
+    "thumbnailImage": "mupi-marker-def_thumbnail.png",
+    "luminanceImage": "mupi-marker-def_luminance.png"
+  },
+  "created": 1782387987752,
+  "updated": 1782387987752
+}

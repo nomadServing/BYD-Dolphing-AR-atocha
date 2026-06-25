@@ -9,7 +9,7 @@ AFRAME.registerComponent('target-video-control', targetVideoControlComponent)
 const onxrloaded = () => {
   XR8.XrController.configure({
     imageTargetData: [
-      require('../image-targets/mupi.json'),
+      require('../image-targets/mupi-marker-def.json'),
     ],
   })
 }
